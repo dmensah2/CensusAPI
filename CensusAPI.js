@@ -8,7 +8,7 @@ const geography = prompt("Enter your geography");
 
 //create geography object (like Python's dictionaries)
 const geography = {
-
+ggg
 }
 //prefix url for which we will append the inputs from the prompts
 const url = "https://api.census.gov/data/2016/acs/acs5?get=NAME";
