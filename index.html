@@ -4,10 +4,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>"Census Data Download API</title>
-    <!---<script src="CensusAPI.js"></script>-->
+    <title>Census Data Download API</title>
+    <script src="downloadcsv.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
-    <link href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet">
 </head>
 <body>
     <h2>Census API Download</h2>
@@ -17,69 +16,37 @@
             <form>
                 <h3>Enter your information:</h3>   
                 <p>Variable:</p>
-                <input type="text" id="variable" name="variable">
+                <form>
+                    <select name = "variable" id="variable">
+                        <option value="S0101_C01_001E">Total Population</option>
+                        <option value="S0101_C03_001E">Male Population</option>
+                        <option value="S0101_C05_001E">Female Population</option>
+                        <option value="S0102_C01_006E">White Population</option>
+                        <option value="S0102_C01_007E">Black Population</option>
+                        <option value="S0102_C01_009E">Asian Population</option>
+                        <option value="S0102_C01_008E">American Indian & Alaska Native Population</option>
+                        <option value="S0102_C01_010E">Native Hawaiian & Other Pacific Islander Population</option>
+                    </select>
+                </form>
                 <br>
                 <p>Geography:</p>
-                <input type="text" id="geography" name="geography">
+                <form>
+                    <select name = "geography" id="geography">
+                        <option value="state">State</option>
+                        <option value="zip code tabulation area">Zip Code Tabulation Area</option>
+                        <option value="urban area">Urban Area</option>
+                        <option value="county">County</option>
+                        <option value="place">Place</option>
+                        <option value="region">Region</option>
+                        <option value="combined statistical area">Combined Statistical Area</option>
+                        <option value="division">Division</option>
+                    </select>
+                </form>
                 <br>
                 <br>
-                <button type="button" onclick="getInputValue();">Submit</button>
-                <button onclick="download_csv()">Download CSV</button> 
+                <button type="button" onclick ="download_csv();">Download CSV</button>
             </form>
-           <p id="output"></p>
         </section>
     </div>
-    <script>
-        //creates function to get input from form. and return Census API information 
-        function getInputValue() {
-             //new instance of xmlhttprequest class 
-            let request = new XMLHttpRequest();
-
-            //gets inputs from the form
-            var variable = document.getElementById("variable").value
-            var geography = document.getElementById("geography").value
-        
-            //prefix url for which we will append the inputs from the prompts
-            const url = "https://api.census.gov/data/2018/acs/acs5/subject?get=";
-
-            //API Key
-            const apiKey = "6df8ecbbdd76fb9432d628ae6178349765cba241";
-
-            //constructs url endpoint we will make our request from
-            const link = `${url}${variable}${",NAME&for="}${geography}${" :*&key="}${apiKey}`;
-
-            //begin to access the JSON data
-            request.onreadystatechange = () => {
-                let data = JSON.parse(request.response);
-                //gets the html element we want to put our data in
-                let x = document.getElementById("output");
-                if (request.readyState === XMLHttpRequest.DONE) {
-                    console.log(data);
-                    //sets the content of our p element equal to our data
-                    x.innerHTML = data
-                } 
-                function download_csv() {
-                        var csv = 'Name,Title\n';
-                        data.forEach(function(row) {
-                                csv += row.join(',');
-                                csv += "\n";
-                        });
-                    
-                        console.log(csv);
-                        var hiddenElement = document.createElement('a');
-                        hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
-                        hiddenElement.target = '_blank';
-                        hiddenElement.download = 'people.csv';
-                        hiddenElement.click();
-                    } 
-            }
-
-            //opens a new connection, using the GET request on the URL endpoint
-            request.open("GET", link);
-
-            //Send request
-            request.send();
-        }
-    </script>
 </body>
 </html>
